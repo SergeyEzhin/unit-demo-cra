@@ -22,65 +22,52 @@ jobs:
         run: npm ci
 
       - name: Build project 
-        run: |
-          npm run build
-          if [ $? -ne 0 ]; then
-            exit 1
-          fi
+        run: npm run build
 
       - name: Check unit tests
-        run: |
-          npm run test
-          if [ $? -ne 0 ]; then
-            exit 1
-          fi
+        run: npm run test
     
       - name: Install chromium
         run: npx playwright install --with-deps chromium
       - name: Check e2e tests
-        run: |
-          npm run e2e
-          if [ $? -ne 0 ]; then
-            exit 1
-          fi
+        run: npm run e2e
+      # - name: Set status - Success
+      #   # if: ${{ job.status == 'success' }}
+      #   if: always()
+      #   uses: actions/
+      #   env:
+      #     STATUS_NAME: 'CI'
+      #     STATUS_DESCRIPTION: 'CI checks passed!'
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       github.statuses.create({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         sha: context.sha,
+      #         state: 'success',
+      #         target_url: 'https://github.com/SergeyEzhin/unit-demo-cra',
+      #         description: `${process.env.STATUS_DESCRIPTION} - Success`,
+      #         context: process.env.STATUS_NAME
+      #       })
 
-      - name: Set status - Success
-        # if: ${{ job.status == 'success' }}
-        if: always()
-        uses: actions/github-script@v6
-        env:
-          STATUS_NAME: 'CI'
-          STATUS_DESCRIPTION: 'CI checks passed!'
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.statuses.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state: 'success',
-              target_url: 'https://github.com/SergeyEzhin/unit-demo-cra',
-              description: `${process.env.STATUS_DESCRIPTION} - Success`,
-              context: process.env.STATUS_NAME
-            })
-
-      - name: Set status - Failure
+      # - name: Set status - Failure
         # if: ${{ job.status == 'failure' }}
-        if: always() && failure()
-        uses: actions/github-script@v6
-        env:
-          STATUS_NAME: 'CI'
-          STATUS_DESCRIPTION: 'CI checks failed!'
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.statuses.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state: 'failure',
-              target_url: 'https://github.com/SergeyEzhin/unit-demo-cra',
-              description: `${process.env.STATUS_DESCRIPTION} - Failure`,
-              context: process.env.STATUS_NAME
-            })
+        # if: always() && failure()
+        # uses: actions/github-script@v6
+        # env:
+        #   STATUS_NAME: 'CI'
+        #   STATUS_DESCRIPTION: 'CI checks failed!'
+        # with:
+        #   github-token: ${{ secrets.GITHUB_TOKEN }}
+        #   script: |
+        #     github.statuses.create({
+        #       owner: context.repo.owner,
+        #       repo: context.repo.repo,
+        #       sha: context.sha,
+        #       state: 'failure',
+        #       target_url: 'https://github.com/SergeyEzhin/unit-demo-cra',
+        #       description: `${process.env.STATUS_DESCRIPTION} - Failure`,
+        #       context: process.env.STATUS_NAME
+        #     })
      

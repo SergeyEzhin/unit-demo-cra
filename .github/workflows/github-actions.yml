@@ -47,7 +47,7 @@ jobs:
       - name: Set status - Success
         # if: ${{ job.status == 'success' }}
         if: always()
-        uses: github-script@4.1.1
+        uses: actions/github-script@v6
         env:
           STATUS_NAME: 'CI'
           STATUS_DESCRIPTION: 'CI checks passed!'
@@ -67,7 +67,7 @@ jobs:
       - name: Set status - Failure
         # if: ${{ job.status == 'failure' }}
         if: always() && failure()
-        uses: github-script@4.1.1
+        uses: actions/github-script@v6
         env:
           STATUS_NAME: 'CI'
           STATUS_DESCRIPTION: 'CI checks failed!'

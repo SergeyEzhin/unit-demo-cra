@@ -10,7 +10,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [ 16.x ]
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

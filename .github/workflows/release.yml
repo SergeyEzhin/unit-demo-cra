@@ -71,6 +71,8 @@ jobs:
       - name: Deploy to GitHub Pages
         if: success()
         run: |
+          git config --global user.name "SergeyEzhin"
+          git config --global user.email "ezhin@mail.ru"
           git checkout --orphan gh-pages
           git --work-tree build add --all
           git --work-tree build commit -m "Publish to GitHub Pages"

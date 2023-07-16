@@ -31,7 +31,7 @@ jobs:
       - name: Generate changelog
         id: changelog
         run: |
-          git log ${{cat previous_release_tag.txt}}..HEAD --pretty=format:"- %s%n" > changelog.txt
+          git log ${{ steps.previous_release.outputs.tag }}..HEAD --pretty=format:"- %s%n" > changelog.txt
 
       - name: Create or update release issue
         id: create_release_issue
@@ -81,7 +81,7 @@ jobs:
       - name: Add result link to release issue
         if: success()
         run: |
-          echo "Test results: ./test-report.html" >> "${{cat create_release_issue.issue_path}}"
+          echo "Test results: ./test-report.html" >> ${{ steps.create_release_issue.outputs.issue-path }}
 
       - name: Close release issue
         if: success()

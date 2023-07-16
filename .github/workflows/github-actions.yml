@@ -22,18 +22,31 @@ jobs:
         run: npm ci
 
       - name: Build project 
-        run: npm run build
+        run: |
+          npm run build
+          if [ $? -ne 0 ]; then
+            exit 1
+          fi
 
       - name: Check unit tests
-        run: npm run test
+        run: |
+          npm run test
+          if [ $? -ne 0 ]; then
+            exit 1
+          fi
     
       - name: Install chromium
         run: npx playwright install --with-deps chromium
       - name: Check e2e tests
-        run: npm run e2e
+        run: |
+          npm run e2e
+          if [ $? -ne 0 ]; then
+            exit 1
+          fi
 
       - name: Set status - Success
-        if: ${{ job.status == 'success' }}
+        # if: ${{ job.status == 'success' }}
+        if: always()
         uses: github-script@4.1.1
         env:
           STATUS_NAME: 'CI'
@@ -52,7 +65,8 @@ jobs:
             })
 
       - name: Set status - Failure
-        if: ${{ job.status == 'failure' }}
+        # if: ${{ job.status == 'failure' }}
+        if: always() && failure()
         uses: github-script@4.1.1
         env:
           STATUS_NAME: 'CI'

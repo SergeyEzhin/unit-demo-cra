@@ -41,7 +41,7 @@ jobs:
           title: Release ${{ github.ref }}
           body: |
             Changelog:
-            ${{cat changelog.txt}}
+            ${{ steps.changelog.outputs.stdout }}
           labels: RELEASE
 
       - name: Run unit tests

@@ -22,27 +22,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Get previous release tag
-        id: previous_release
-        run: |
-          git fetch --tags
-          git describe --tags --abbrev=0 --match="v*" > previous_release_tag.txt
+      # - name: Get previous release tag
+      #   id: previous_release
+      #   run: |
+      #     git fetch --tags
+      #     git describe --tags --abbrev=0 --match="v*" > previous_release_tag.txt
 
-      - name: Generate changelog
-        id: changelog
-        run: |
-          git log ${{ steps.previous_release.outputs.tag }}..HEAD --pretty=format:"- %s%n" > changelog.txt
+      # - name: Generate changelog
+      #   id: changelog
+      #   run: |
+      #     git log ${{ steps.previous_release.outputs.tag }}..HEAD --pretty=format:"- %s%n" > changelog.txt
 
-      - name: Create or update release issue
-        id: create_release_issue
-        uses: peter-evans/create-issue-from-file@v4
-        with:
-          token: ${{ secrets.SECRET_TOKEN }}
-          title: Release ${{ github.ref }}
-          body: |
-            Changelog:
-            ${{ steps.changelog.outputs.stdout }}
-          labels: RELEASE
+      # - name: Create or update release issue
+      #   id: create_release_issue
+      #   uses: peter-evans/create-issue-from-file@v4
+      #   with:
+      #     token: ${{ secrets.SECRET_TOKEN }}
+      #     title: Release ${{ github.ref }}
+      #     body: |
+      #       Changelog:
+      #       ${{ steps.changelog.outputs.stdout }}
+      #     labels: RELEASE
 
       - name: Run unit tests
         run: npm run test-ci
@@ -78,14 +78,14 @@ jobs:
           git --work-tree build commit -m "Publish to GitHub Pages"
           git push --force origin gh-pages
 
-      - name: Add result link to release issue
-        if: success()
-        run: |
-          echo "Test results: ./test-report.html" >> ${{ steps.create_release_issue.outputs.issue-path }}
+      # - name: Add result link to release issue
+      #   if: success()
+      #   run: |
+      #     echo "Test results: ./test-report.html" >> ${{ steps.create_release_issue.outputs.issue-path }}
 
-      - name: Close release issue
-        if: success()
-        uses: peter-evans/close-issue@v3
-        with:
-          token: ${{ secrets.SECRET_TOKEN }}
-          issue-number: ${{ steps.create_release_issue.outputs.issue-number }}
+      # - name: Close release issue
+      #   if: success()
+      #   uses: peter-evans/close-issue@v3
+      #   with:
+      #     token: ${{ secrets.SECRET_TOKEN }}
+      #     issue-number: ${{ steps.create_release_issue.outputs.issue-number }}

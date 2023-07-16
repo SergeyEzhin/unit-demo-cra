@@ -53,12 +53,6 @@ jobs:
       - name: Run e2e tests
         run: npm run e2e
 
-      - name: Deploy to gh-pages
-        run: npm run deploy
-
-      - name: Close release issue
-        run: node close-release-issue.js
-
       - name: Build project 
         run: npm run build
 
